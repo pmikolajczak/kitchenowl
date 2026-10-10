@@ -70,13 +70,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> setAppLocale(Locale? locale) async {
+    emit(state.copyWith(appLocale: Nullable(locale)));
     if (locale == null) {
       await PreferenceStorage.getInstance().delete(key: 'appLanguage');
     } else {
       await PreferenceStorage.getInstance()
           .write(key: 'appLanguage', value: locale.languageCode);
     }
-    emit(state.copyWith(appLocale: Nullable(locale)));
   }
 
   void setTheme(ThemeMode themeMode) {

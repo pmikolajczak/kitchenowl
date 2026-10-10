@@ -106,6 +106,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Polski').last);
     await tester.pumpAndSettle();
+    expect(cubit.state.appLocale, const Locale('pl'));
     expect(find.text('Ustawienia'), findsOneWidget);
     expect(find.text('Język'), findsOneWidget);
 
