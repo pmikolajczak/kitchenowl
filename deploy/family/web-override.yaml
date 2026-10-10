@@ -1,0 +1,5 @@
+# Optional custom frontend on the pinned official all-in-one backend image.
+services:
+  app:
+    volumes:
+      - ${KITCHENOWL_WEB_DIR:?Set KITCHENOWL_WEB_DIR to the verified web build}:/var/www/web/kitchenowl:ro

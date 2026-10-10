@@ -6,7 +6,8 @@ oryginalnego KitchenOwl, potem rozwijamy własny fork na podstawie realnych potr
 Projekt rodzinny, bez płatnych usług w pierwszej iteracji.
 
 ## Stan i założenia
-- Bazowe wydanie: v0.7.10, oficjalny obraz ARM64 all-in-one, bez zmian funkcjonalnych.
+- Bazowe wydanie: v0.7.10, oficjalny backend ARM64 all-in-one; pierwszy zatwierdzony
+  dodatek forka to niezależny, zapamiętywany wybór języka interfejsu (Systemowy/Polski/English).
 - Frontend Flutter, backend Flask/Python, SQLite i obrazy w /data.
 - Polski interfejs i bazowy katalog produktów/kategorii już istnieją upstream.
 - Wspólne gospodarstwo, listy, przepisy, import URL i rekomendacje są funkcjami upstream;

@@ -22,6 +22,7 @@ import 'package:kitchenowl/pages/settings_server_user_page.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
 import 'package:kitchenowl/styles/colors.dart';
 import 'package:kitchenowl/widgets/settings/color_button.dart';
+import 'package:kitchenowl/widgets/settings/app_language_tile.dart';
 import 'package:kitchenowl/widgets/sliver_expansion_tile.dart';
 import 'package:kitchenowl/widgets/user_list_tile.dart';
 import 'package:sliver_tools/sliver_tools.dart';
@@ -114,6 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
+                const AppLanguageTile(),
                 ListTile(
                   title: Text(AppLocalizations.of(context)!.themeMode),
                   leading: const Icon(Icons.nights_stay_sharp),

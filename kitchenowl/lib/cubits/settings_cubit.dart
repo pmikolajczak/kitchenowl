@@ -13,6 +13,8 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<void> load() async {
+    final appLanguage =
+        PreferenceStorage.getInstance().read(key: 'appLanguage');
     final themeModeIndex =
         PreferenceStorage.getInstance().readInt(key: 'themeMode');
     final dynamicAccentColor =
@@ -42,7 +44,12 @@ class SettingsCubit extends Cubit<SettingsState> {
       themeMode = ThemeMode.values[(await themeModeIndex)!];
     }
 
+    final appLanguageCode = await appLanguage;
+
     emit(SettingsState(
+      appLocale: const ['en', 'pl'].contains(appLanguageCode)
+          ? Locale(appLanguageCode!)
+          : null,
       themeMode: themeMode,
       dynamicAccentColor: await dynamicAccentColor ?? false,
       gridSize: (await gridSize) != null
@@ -60,6 +67,16 @@ class SettingsCubit extends Cubit<SettingsState> {
       restoreLastShoppingList: await restoreLastShoppingList ?? false,
       shoppingListKeepAwake: await shoppingListKeepAwake ?? false,
     ));
+  }
+
+  Future<void> setAppLocale(Locale? locale) async {
+    if (locale == null) {
+      await PreferenceStorage.getInstance().delete(key: 'appLanguage');
+    } else {
+      await PreferenceStorage.getInstance()
+          .write(key: 'appLanguage', value: locale.languageCode);
+    }
+    emit(state.copyWith(appLocale: Nullable(locale)));
   }
 
   void setTheme(ThemeMode themeMode) {
@@ -145,6 +162,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 }
 
 class SettingsState extends Equatable {
+  final Locale? appLocale;
   final ThemeMode themeMode;
   final bool dynamicAccentColor;
   final int recentItemsCount;
@@ -158,6 +176,7 @@ class SettingsState extends Equatable {
   final bool shoppingListKeepAwake;
 
   const SettingsState({
+    this.appLocale,
     this.themeMode = ThemeMode.system,
     this.dynamicAccentColor = false,
     this.gridSize = GridSize.normal,
@@ -172,6 +191,7 @@ class SettingsState extends Equatable {
   });
 
   SettingsState copyWith({
+    Nullable<Locale>? appLocale,
     ThemeMode? themeMode,
     bool? dynamicAccentColor,
     GridSize? gridSize,
@@ -185,6 +205,7 @@ class SettingsState extends Equatable {
     bool? shoppingListKeepAwake,
   }) =>
       SettingsState(
+        appLocale: (appLocale ?? Nullable(this.appLocale)).value,
         themeMode: themeMode ?? this.themeMode,
         dynamicAccentColor: dynamicAccentColor ?? this.dynamicAccentColor,
         gridSize: gridSize ?? this.gridSize,
@@ -204,6 +225,7 @@ class SettingsState extends Equatable {
 
   @override
   List<Object?> get props => [
+        appLocale,
         themeMode,
         dynamicAccentColor,
         gridSize,

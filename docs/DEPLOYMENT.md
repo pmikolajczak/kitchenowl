@@ -21,7 +21,7 @@ Wybierz prywatny katalog runtime, oznaczany dalej KITCHENOWL_ROOT:
 Oryginał: https://github.com/TomBursch/kitchenowl (AGPL-3.0).
 Fork: https://github.com/pmikolajczak/kitchenowl.
 origin wskazuje fork, upstream oryginał. Branch family/deployment bazuje na
-v0.7.10. Nie zmieniono funkcjonalności aplikacji.
+v0.7.10. Pierwszy zatwierdzony dodatek to wybór języka interfejsu; backend pozostaje upstream.
 
 ## Konfiguracja i uruchomienie
 Używamy jednego oficjalnego obrazu all-in-one, przypiętego do stabilnego wydania
@@ -155,3 +155,23 @@ publikuj do GHCR i przypinaj digest; dane/sekrety/Serve nie wymagają przebudowy
 - https://github.com/TomBursch/kitchenowl/releases/tag/v0.7.10
 - https://tailscale.com/docs/reference/tailscale-cli/serve
 - https://tailscale.com/docs/features/tailscale-services
+
+## Własny frontend: wybór języka interfejsu
+Branch family/ui-language dodaje Ustawienia → Język (Systemowy, Polski, English).
+Wybór jest zapamiętywany lokalnie w SharedPreferences/localStorage i od razu
+zmienia interfejs, niezależnie od języka gospodarstwa i katalogu produktów.
+Systemowy usuwa override i przywraca wybór urządzenia. Każdy telefon wybiera język
+osobno; usunięcie danych witryny resetuje ustawienie. Uzupełniono trzy brakujące
+polskie etykiety. Nie zmieniono bazy, modeli ani backendu.
+
+Workflow Family web build buduje frontend Flutter 3.44.8 poza VM, po analizie
+i testach trwałości preferencji oraz widgetu na angielskim urządzeniu. Wynik
+jest artefaktem kitchenowl-family-web z family-revision.txt zawierającym commit.
+Pobierz tylko artefakt udanego runu właściwego commita do prywatnego katalogu
+web-releases/<commit>, dodaj KITCHENOWL_WEB_DIR do config/deployment.env i do
+poleceń Compose dodaj `-f deploy/family/web-override.yaml` po głównym pliku.
+Override montuje zweryfikowany frontend read-only do istniejącego obrazu;
+liczba kontenerów, baza i porty pozostają te same. Przed recreacją app wykonaj
+backup. Zachowaj wcześniejszy frontend jako rollback; po wdrożeniu sprawdź
+revision, HTTPS, health i możliwość logowania. Backup powinien zawierać również
+aktualny build frontendowy. Nie kopiuj danych VM do publicznych artefaktów CI.

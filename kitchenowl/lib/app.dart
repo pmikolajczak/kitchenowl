@@ -212,6 +212,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 }
 
                 return MaterialApp.router(
+                  locale: state.appLocale,
                   builder: (context, child) =>
                       AnnotatedRegion<SystemUiOverlayStyle>(
                     value: _getSystemUI(context, state),

@@ -1,6 +1,7 @@
 # KitchenOwl family fork
 Read docs/PROJECT_VISION.md and docs/DEPLOYMENT.md before deployment changes.
-No functional changes, AI models, or additional services in iteration 0.
+The owner authorized an interface-language selector as the first functional change.
+Other planned features, AI models and additional services remain out of scope.
 Never touch other stacks, globally prune Docker, or reset/overwrite Tailscale Serve.
 Runtime secrets/data/backups live outside this public repository in ../config,
 ../data, ../backups, ../state. Never commit them or print JWT secret contents.
