@@ -6,13 +6,14 @@ import 'package:kitchenowl/cubits/settings_cubit.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/widgets/settings/app_language_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 Future<SettingsCubit> loadedSettings() async {
   final cubit = SettingsCubit();
   // These unrelated startup probes need no platform plugins in settings tests.
   Config.deviceInfo?.ignore();
   Config.packageInfo?.ignore();
-  await cubit.stream.first;
+  await cubit.stream.first.timeout(const Duration(seconds: 5));
   return cubit;
 }
 
@@ -38,6 +39,13 @@ Widget languageApp(SettingsCubit cubit) => BlocProvider.value(
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
+  PackageInfo.setMockInitialValues(
+    appName: 'KitchenOwl',
+    packageName: 'com.tombursch.kitchenowl',
+    version: '0.7.10',
+    buildNumber: '124',
+    buildSignature: '',
+  );
 
   setUp(() async {
     await (await SharedPreferences.getInstance()).clear();

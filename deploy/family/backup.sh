@@ -21,7 +21,11 @@ resume() {
 trap resume EXIT
 stopped=1
 docker compose --env-file "$root/config/deployment.env" -f "$compose" stop app >&2
-tar -czf "$archive.partial" -C "$root" data config repo/deploy/family/compose.yaml
+paths=(data config repo/deploy/family/compose.yaml)
+if [[ -d "$root/web-releases" ]]; then
+  paths+=(web-releases repo/deploy/family/web-override.yaml)
+fi
+tar -czf "$archive.partial" -C "$root" "${paths[@]}"
 mv "$archive.partial" "$archive"
 docker compose --env-file "$root/config/deployment.env" -f "$compose" start app >&2
 stopped=0
