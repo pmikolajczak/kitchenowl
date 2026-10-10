@@ -175,3 +175,9 @@ liczba kontenerów, baza i porty pozostają te same. Przed recreacją app wykona
 backup. Zachowaj wcześniejszy frontend jako rollback; po wdrożeniu sprawdź
 revision, HTTPS, health i możliwość logowania. Backup powinien zawierać również
 aktualny build frontendowy. Nie kopiuj danych VM do publicznych artefaktów CI.
+
+CI dodaje identyfikator commita do URL skryptów bootstrap i main.dart.js przez
+`deploy/family/version-web.py`. Dzięki temu nowy HTML pobiera nowe skrypty nawet
+przy zapisanej poprzedniej wersji w Safari. Jeśli otwarta karta nadal pokazuje
+stary ekran, otwórz adres aplikacji z `?v=<commit>` i sprawdź główne Settings →
+General → Language (nad Theme). Nie trzeba usuwać danych ani konta użytkownika.

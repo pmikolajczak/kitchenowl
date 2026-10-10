@@ -5,6 +5,7 @@ on:
     paths:
       - kitchenowl/**
       - .github/workflows/family-web.yml
+      - deploy/family/version-web.py
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,6 +34,8 @@ jobs:
         working-directory: kitchenowl
       - name: Record source revision
         run: printf '%s\n' "$GITHUB_SHA" > kitchenowl/build/web/family-revision.txt
+      - name: Version frontend scripts
+        run: python3 deploy/family/version-web.py kitchenowl/build/web "$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         with:
           name: kitchenowl-family-web
