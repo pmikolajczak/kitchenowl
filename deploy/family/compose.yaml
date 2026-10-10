@@ -1,0 +1,21 @@
+name: kitchenowl-family
+services:
+  app:
+    image: tombursch/kitchenowl:v0.7.10@sha256:62d2ead2845ad3f63005f3a87598dddf952ed9ceac685e942ec32f11b3078ec8
+    platform: linux/arm64
+    user: "${KITCHENOWL_UID:-1000}:${KITCHENOWL_GID:-1000}"
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${KITCHENOWL_PORT:-8080}:8080"
+    env_file:
+      - ${KITCHENOWL_ROOT:?Set KITCHENOWL_ROOT to a private runtime directory}/config/kitchenowl.env
+    environment:
+      JWT_SECRET_KEY_FILE: /run/secrets/jwt-secret
+    volumes:
+      - ${KITCHENOWL_ROOT:?Set KITCHENOWL_ROOT to a private runtime directory}/data:/data
+      - ${KITCHENOWL_ROOT:?Set KITCHENOWL_ROOT to a private runtime directory}/config/jwt-secret:/run/secrets/jwt-secret:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
