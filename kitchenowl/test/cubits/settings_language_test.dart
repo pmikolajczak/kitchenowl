@@ -97,7 +97,7 @@ void main() {
       (tester) async {
     tester.binding.platformDispatcher.localeTestValue = const Locale('en');
     addTearDown(tester.binding.platformDispatcher.clearLocaleTestValue);
-    final cubit = await loadedSettings();
+    final cubit = (await tester.runAsync(loadedSettings))!;
     await tester.pumpWidget(languageApp(cubit));
     await tester.pumpAndSettle();
     expect(find.text('Settings'), findsOneWidget);
@@ -111,7 +111,7 @@ void main() {
 
     await tester.pumpWidget(const SizedBox());
     await cubit.close();
-    final restored = await loadedSettings();
+    final restored = (await tester.runAsync(loadedSettings))!;
     await tester.pumpWidget(languageApp(restored));
     await tester.pumpAndSettle();
     expect(find.text('Ustawienia'), findsOneWidget);
